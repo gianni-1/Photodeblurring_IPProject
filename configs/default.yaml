@@ -1,0 +1,13 @@
+seed: 42
+image_size: 512
+blur:
+  type: motion
+  lengths: [9, 17, 31]
+  angles_deg: [0, 30, 60, 90]
+noise:
+  gaussian_sigma: [0.0, 0.01, 0.03]
+metrics: [psnr, ssim]
+methods:
+  standard: wiener
+  sparse: tv_deconvolution
+  recent: dpir_or_pnp

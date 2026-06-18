@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+
+# Local/editor
+.DS_Store
+.vscode/
+.idea/
+.env
+
+# Local state
+state/*.db
+
+# Data and generated outputs
+data/raw/*
+data/processed/*
+data/results/*
+!data/**/.gitkeep
+outputs/
+report/figures/*
+!report/figures/.gitkeep
+
+# Notebooks
+.ipynb_checkpoints/
+
+# Submission/archive artifacts
+*.zip
