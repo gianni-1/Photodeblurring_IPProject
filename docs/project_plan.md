@@ -1,4 +1,4 @@
-# Detailed step-by-step project plan
+# Detailed step-by-step project plan (Group 1: Pietro & Gianni)
 
 ## Goal
 
@@ -19,14 +19,15 @@ Expected output:
 
 ## Step 2 - Forward model and ill-posedness (2026-06-19 to 2026-06-22)
 
-1. Write the model `y = Kx + eta`, with `K` as convolution by the motion PSF.
+1. Write the model `g = Af + epsilon`, with `A` as convolution by the motion PSF.
 2. Analyze the Fourier magnitude of the PSF. Motion blur creates frequencies close to zero, so direct inversion amplifies noise.
-3. Compute condition-number proxies:
+3. Apply SVD and analyze the condition number in order to gain information about how stable the inversion would be
+4. Compute condition-number proxies:
    - minimum/maximum nonzero Fourier response,
    - number of near-zero frequencies below chosen thresholds,
-   - visual inverse-filter noise amplification.
-4. Create report plots:
+5. Create report plots:
    - PSF image,
+   - Singular values
    - log Fourier magnitude,
    - frequency-response or singular-value proxy.
 
@@ -36,42 +37,38 @@ Expected output:
 
 ## Step 3 - Standard baseline with parameter optimization (2026-06-22 to 2026-06-25)
 
-Recommended baseline: **Wiener/Tikhonov deconvolution**.
+**Tikhonov deconvolution**.
 
-1. Implement frequency-domain deconvolution:
-   `x_hat = conj(H) / (|H|^2 + lambda) * y_hat`.
-2. Sweep `lambda` over a logarithmic grid.
-3. Select the best parameter by PSNR/SSIM on synthetic validation images.
-4. Inspect visual quality to avoid relying only on metrics.
-5. Record runtime.
+1. Apply Tikhonov.
+2. Use L-Curve concept to find the best lambda value.
+3. Inspect visual quality to avoid relying only on metrics.
+4. Record runtime.
 
-Alternative if easier: Richardson-Lucy with iteration count as parameter.
 
 Expected output:
 - Best `lambda` or iteration count per noise/blur setting.
-- PSNR/SSIM table.
 - Clean/blurred/restored comparison figure.
 
 ## Step 4 - Sparse method (2026-06-25 to 2026-06-28)
 
-Recommended sparse method: **TV-regularized deconvolution**.
+**Matching pursuit with Haar wavelet transformation matrix**.
 
-1. Formulate optimization:
-   `min_x 0.5 ||Kx - y||_2^2 + alpha TV(x)`.
-2. Implement with a primal-dual, ADMM, or available image-processing solver.
-3. Sweep `alpha` and choose it by validation PSNR/SSIM.
-4. Compare edge preservation, ringing, and staircase artifacts against Wiener/Tikhonov.
 
-Fallback sparse method: wavelet-L1 deconvolution if TV implementation becomes too time-consuming.
+1. Represent the image in the Haar wavelet basis: $$ g' = Af = A\Psi s = \Phi s, $$
+where $\Psi$ is the transform into the sparse space (Haar wavelet matrix), and  $\Phi = A\Psi$.
+2. Apply the Matching Pursuit algorithm to iteratively recover the sparse wavelet coefficients.
+3. Signal processesing with zero padding in all dimensions 
+4. Signal processesing with zero padding in one dimension
+
+
 
 Expected output:
-- Parameter sweep for `alpha`.
-- Quantitative comparison to the standard baseline.
-- Figure showing where sparse regularization helps or fails.
+- Figure illustrating where sparse wavelet reconstruction improves or fails compared to Tikhonov.
 
 ## Step 5 - Recent method comparison (2026-06-28 to 2026-07-01)
+(Here we want to look for methods that weren't presented in the lecture and are still open for new methods)
 
-Preferred recent method: **plug-and-play/deep-denoiser prior**, for example DPIR.
+Preferred recent method: **plug-and-play/deep-denoiser prior**, for example DPIR (https://github.com/cszn/DPIR).
 
 1. Check implementation feasibility and dependency size.
 2. Use the same blurred inputs and PSFs as the other methods.
@@ -107,11 +104,11 @@ Expected output:
 
 | Area | Owner | Reviewer |
 | --- | --- | --- |
-| Forward model and blur generation | Person A | Person B |
-| Ill-posedness plots | Person A | Person B |
-| Standard method and tuning | Person A | Person B |
-| Sparse method | Person B | Person A |
-| Recent method | Person B | Person A |
-| Literature and references | Person B | Person A |
+| Forward model and blur generation | Pietro | Gianni |
+| Ill-posedness plots | Pietro | Gianni |
+| Standard method and tuning | Pietro | Gianni |
+| Sparse method | Gianni | Pietro |
+| Recent method | Gianni | Pietro |
+| Literature and references | Gianni | Pietro |
 | Final report integration | Both | Both |
 | Final zip/presentation check | Both | Both |
