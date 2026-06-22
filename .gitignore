@@ -18,7 +18,6 @@ state/*.db
 
 # Data and generated outputs
 data/raw/*
-data/processed/*
 data/results/*
 !data/**/.gitkeep
 outputs/
