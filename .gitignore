@@ -29,3 +29,7 @@ report/figures/*
 
 # Submission/archive artifacts
 *.zip
+
+# External local dependencies and model weights
+external/
+
