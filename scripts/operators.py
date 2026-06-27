@@ -40,3 +40,17 @@ def apply_motion_blur(image, psf):
         pad_y:pad_y + image.shape[0],
         pad_x:pad_x + image.shape[1]
     ]
+
+def apply_motion_blur_rgb(image_rgb, psf):
+    """
+    Apply the same motion blur independently to RGB channels.
+    """
+    blurred_rgb = np.zeros_like(image_rgb, dtype=float)
+
+    for channel in range(3):
+        blurred_rgb[:, :, channel] = apply_motion_blur(
+            image_rgb[:, :, channel],
+            psf
+        )
+
+    return np.clip(blurred_rgb, 0, 1)
