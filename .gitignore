@@ -23,6 +23,7 @@ data/results/*
 outputs/
 report/figures/*
 !report/figures/.gitkeep
+!report/figures/*.png
 
 # Notebooks
 .ipynb_checkpoints/
@@ -32,4 +33,14 @@ report/figures/*
 
 # External local dependencies and model weights
 external/
+# LaTeX build byproducts
+*.aux
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.toc
+*.synctex.gz
 
